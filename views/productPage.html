@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="productStyle.css">
+    <script src="login.js"></script>
+    <title>Specs Page</title>
+</head>
+
+<body>
+    <div class="header">SHOPIFY</div>
+    <div class="content">
+        <div class="c1">
+            <li class="active"><a href="/adminPage">Products</a></li>
+            <li><a href="/soldPage">Sold Products</a></li>
+        </div>
+        <div class="row2">
+            <div class="row2c1">
+                <form id="specsForm" action="/saveSpecs" method="POST">
+                    <div class="addPartsBox">
+                        <h3>EQUIPMENT SPECIFICATION</h3>
+                        <input type="text" id="specsNameInput" name="specsName" placeholder="Enter Specification" required>
+                        <button type="submit" class="addPart">Add</button>
+                    </div>
+                </form>          
+            </div>
+            <div class="row2c2">
+                <div class="partsDisplay">
+                    <p>display</p>
+                </div>
+            </div>
+        </div>    
+    </div>
+    <script src="product.js"></script>
+</body>
+</html>

@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ADMIN</title>
+    <link rel = "stylesheet" href = "adminStyle.css">
+</head>
+<body>
+<div id="addProductModal" class="modal">
+    <div class="modal-content">
+        <span class="close">&times;</span>
+        <form id="addProductForm" enctype="multipart/form-data">
+            <label for="name">Name:</label><br>
+            <input type="text" id="name" name="name" required><br>
+            <label for="price">Price:</label><br>
+            <input type="number" id="price" name="price" step="0.01" required><br>
+            <label for="image">Image:</label><br>
+            <input type="file" id="image" name="image" accept="image/*" required><br>
+            <label for="quantity">Quantity:</label><br>
+            <input type="number" id="quantity" name="quantity" required><br>
+            <label for="status">Status:</label><br>
+            <select id="status" name="status" required>
+                <option value="available">Available</option>
+                <option value="out of stock">Out of Stock</option>
+            </select><br>
+            <label for="category">Category:</label><br>
+            <select id="category" name="category" required>
+                <option value="Footwear">Footwear</option>
+                <option value="Clothes">Clothes</option>
+                <option value="Accessories">Accessories</option>
+                <option value="Toys">Toys</option>
+                <option value="Cosmetics">Cosmetics</option>
+                <option value="Device">Device</option>
+            </select><br>
+            <input type="submit" value="Submit" class="subBtn">
+        </form>        
+    </div>
+</div>
+
+    <div class = "header">mySTOCK</div>
+    <div class="content">
+        <div class="c1">
+            <li class="active"><a href="/adminPage">Products</a></li>
+            <li><a href="/soldPage">Sold Products</a></li>
+        </div>
+        <div class = "disp">
+            <h3 class = "name">PRODUCTS</h3>
+            <div class="c2">
+                <div class="row1">
+                    <button id="addProductBtn" class="addProduct"></button>
+                </div>
+                <table class="labelsTable">
+                    <tr>
+                        <th>Name</th>
+                        <th>Image</th>
+                        <th class = "price">Price</th>
+                        <th class = "quant">Quantity</th>
+                        <th class = "status">Status</th>
+                        <th class = "category">Category</th>
+                    </tr>
+                </table>
+                <div class="row2">
+                    asdasdasd
+                </div>
+            </div>
+        </div>
+    </div>    
+<script src = "admin.js"></script> 
+</body>
+</html>

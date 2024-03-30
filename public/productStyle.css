@@ -1,0 +1,295 @@
+.content {
+    display: flex;
+    flex-direction: column;
+    margin-top: 80px; /* Adjust the top margin to account for the header */
+}
+
+.header {
+    display: flex;
+    justify-content: left;
+    align-items: center;
+    text-align: left;
+    font-size: xx-large;
+    background-color: white;
+    min-height: 80px;
+    max-height: 80px;
+    position: fixed;
+    top: 0;
+    width: 100%;
+    z-index: 2;
+    padding-left: 50px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.c1 {
+    width: 18%;
+    list-style-type: none;
+    min-height: 660px;
+    max-height: 660px;
+    text-align: center;
+    position: fixed;
+    left: 0;
+    top: 80px;
+    background-color: #ffffff;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.c1 li {
+    position: relative;
+    height: 60px;
+    display: flex;
+    padding-left: 30px;
+    align-items: center;
+}
+
+a {
+    text-decoration: none;
+    font-size: 20px;
+    color: black;
+}
+
+body {
+    font-family: 'Arial', sans-serif;
+    margin: 0;
+    overflow-x: hidden;
+    background-color: rgb(222, 219, 219);
+}
+
+.row2 {
+    display: flex;
+    flex-direction: row;
+    width: 70%;
+    min-height: 550px;
+    border-radius: 10px;
+    flex-wrap: wrap;
+    gap: 10px;
+    padding: 10px;
+    overflow-y: auto;
+    margin-left: 350px;
+    margin-top: 50px;
+    background-color: #ffffff;
+}
+
+.row2c1 {
+    width: 30%;
+    border-radius: 5px;
+    padding: 20px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.row2c2 {
+    width: 60%;
+    min-height: 50%;
+    border-radius: 5px;
+    padding: 20px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.editButton{
+    margin-top: 8px;
+    margin-left: 10px;
+    padding: 5px 10px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    width: 30px;
+    height: 30px;
+    background-color: green;
+    background-image: url('/images/pencil.png');
+    background-size: 15px 15px; /* Adjusts the background image to cover the entire button */
+    background-repeat: no-repeat; /* Prevents the image from repeating */
+    background-position: center;
+}
+
+.deleteButton {
+    margin-top: 8px;
+    margin-left: 10px;
+    padding: 5px 10px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    background-image: url('/images/bin.png');
+    background-color: red;
+    background-size: 15px 15px; /* Adjusts the background image to cover the entire button */
+    background-repeat: no-repeat; /* Prevents the image from repeating */
+    background-position: center;
+    width: 30px;
+    height: 30px;
+}
+
+.addPartsBox {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    height: 50%;
+    padding: 10px;
+    border-radius: 5px;
+    background-color: #ffffff; /* Light background for contrast */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Shadow for depth */
+}
+
+.addPart {
+    margin-top: 10px;
+    padding: 5px;
+    padding-left: 20px;
+    padding-right: 20px;
+    font-size: 15px;
+    background-color: #4CAF50; /* Green background */
+    color: white; /* White text */
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease; /* Smooth transition for hover effect */
+}
+
+.addPart:hover {
+    background-color: #45a049; /* Darker shade on hover */
+}
+
+.partsDisplay, .specsDisplay {
+    border: 1px solid #ccc;
+    padding: 10px;
+    margin-bottom: 10px;
+    border-radius: 5px;
+    background-color: #f9f9f9;
+    width: 90%;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 5px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.c1Row1, .c1Row2 {
+    height: 100px;
+    background-color: green;
+    padding: 10px;
+    margin: 0;
+}
+
+.c1Row2 ul li a {
+    display: block; 
+    width: 100%;
+    height: 100%;
+    text-decoration: none; 
+    color: inherit;
+}
+
+li {
+    list-style-type: none;
+    padding: 10px;
+    margin: 0;
+    width: 255px;
+}
+
+ul {
+    margin: 0;
+    padding: 0;
+}
+
+a {
+    text-decoration: none;
+    font-size: 20px;
+    margin: 0;
+}
+
+h3 {
+    margin-top: 0px;
+}
+
+.equipText {
+    text-align: center;
+    font-size: large;
+    margin-top: 0px;
+}
+
+.active {
+    background-color: rgb(222, 219, 219);
+}
+
+li:hover {
+    background-color: rgb(222, 219, 219);
+}
+
+.modal {
+ display: none;
+ position: fixed;
+ z-index: 1;
+ left: 640px;
+ top: 150px;
+ width: 28%;
+ height: 50%;
+ overflow: auto;
+ background-color: rgba(0,0,0,0.4);
+}
+
+.modal-content {
+ background-color: #fefefe;
+ margin: 15% auto;
+ padding: 20px;
+ border: 1px solid #888;
+ width: 50%;
+}
+
+.close {
+ color: #aaa;
+ float: right;
+ font-size: 28px;
+ font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+ color: black;
+ text-decoration: none;
+ cursor: pointer;
+}
+
+.equipBox {
+    border: 1px solid #ccc;
+    padding-left: 10px;
+    padding-right: 10px;
+    width: 240px; 
+    text-align: center; 
+    flex-wrap: wrap;
+    height: 370px;
+    border-radius: 10px;
+    border-width: 2px;
+    border-color: black;
+}
+
+.entityNumber {
+    text-align: left;
+}
+
+img {
+    width: 190px;
+    height: 140px;
+    object-fit: cover;
+    flex-grow: 1;
+    flex-basis: 200;
+    border-radius: 10px;
+}
+
+.button-container {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    margin-top: 10px;
+}
+
+.button {
+    display: inline-block;
+    padding: 10px 20px;
+    color: #fff;
+    background-color: #007bff;
+    text-decoration: none;
+    border-radius: 5px;
+    text-align: center;
+    transition: background-color 0.3s ease;
+}
+
+.button:hover {
+    background-color: #0056b3; 
+}

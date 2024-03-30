@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Product Info</title>
+    <link rel="stylesheet" href="productInfoStyle.css">
+</head>
+<body>
+    <header>
+        <button id="logoBtn" class="logo">Shoppee</button>
+        <form class="search-bar">
+            <input type="text" placeholder="Sign up and get 10% off your first order">
+            <button type="submit" class="searchBtn"></button>
+        </form>
+        <button class="cart"></button>
+    </header>
+    <main>
+        <div class="product-info-container">
+            <div class="product-image">
+                <img id = "imgs" src="product-image-placeholder.jpg" alt="Product Image">
+            </div>
+            <div class="product-details">
+                <h2 id="product-name">Product Name</h2>
+                <p id="product-price">Price: ₱00.00</p>
+                <h3>Specifications</h3>
+                <div id = "spec" class="product-specs">
+                    <ul>
+                        <li>Spec 1: Description</li>
+                        <li>Spec 2: Description</li>
+                        <li>Spec 3: Description</li>
+                    </ul>
+                </div>
+                <p id="product-quantity">Quantity: 5</p>
+            </div>
+            <div class="product-actions">
+                <button id="addToCartBtn" class="action-btn">Add to Cart</button>
+                <button id="buyNowBtn" class="action-btn">Buy Now</button>
+            </div>
+        </div>
+    </main>
+    <script src="productInfo.js"></script>
+</body>
+</html>
