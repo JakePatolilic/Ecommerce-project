@@ -8,14 +8,19 @@
 </head>
 <body>
     <header>
-        <button id="logoBtn" class="logo">Shoppee</button>
+        <button id="logoBtn" class="logo">eShop</button>
         <form class="search-bar">
             <input type="text" placeholder="Sign up and get 10% off your first order">
             <button type="submit" class="searchBtn"></button>
         </form>
-        <button class="cart"></button>
+        <button class="cart" id = "cartBtn"></button>
+        <div class="user-menu">
+            <button class="user-button"></button>
+            <div class="dropdown-content">
+                <a href= "\" class="logout">Log Out</a>
+            </div>
     </header>
-    <main>
+    <main id = "pContainer">
         <div class="product-info-container">
             <div class="product-image">
                 <img id = "imgs" src="product-image-placeholder.jpg" alt="Product Image">

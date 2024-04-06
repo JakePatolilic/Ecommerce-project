@@ -16,7 +16,7 @@ header {
    align-items: center;
    text-align: left;
    font-size: xx-large;
-   background: linear-gradient(to bottom, #f44336, #ff5722);
+   background-color: #2196f3; /* Light blue */
    min-height: 80px;
    max-height: 80px;
    position: fixed;
@@ -28,18 +28,20 @@ header {
    padding: 10px;
 }
 
-
-
 .logo {
    font-size: 2em;
    border: none;
-   background: linear-gradient(to bottom, #f44336, #ff5722);
+   background: none;
    color: white;
    margin-left: 120px;
 }
 
+.logo:hover {
+   color: #ffffff99;
+}
+
 .search-bar {
-   flex-grow: 1; /* This allows the search bar to grow and take up available space */
+   flex-grow: 1;
    padding: 10px;
    border: none;
    border-radius: 10px;
@@ -49,16 +51,34 @@ header {
 .searchBtn{
    position: fixed;
    top: 34px;
-   left: 1189px;
+   left: 1117px;
    background-image: url('/images/search.png');
    height: 36px;
    width: 60px;
-   background-size: 15px 15px; /* Adjusts the background image to cover the entire button */
-   background-repeat: no-repeat; /* Prevents the image from repeating */
+   background-size: 15px 15px;
+   background-repeat: no-repeat;
    background-position: center;
-   background-color: #f44336;
+   background-color: #2196f3; /* Light blue */
    border: none;
    border-radius: 2px;
+}
+
+.cart {
+   background-color: #2196f3; /* Light blue */
+   background-size: 30px 30px;
+   background-repeat: no-repeat;
+   background-position: center;
+   width: 40px;
+   height: 40px;
+   color: white;
+   padding: 10px;
+   border: none;
+   border-radius: 5px;
+   font-size: 1em;
+   background-image: url('/images/cart.png');
+   position: fixed;
+   left: 1260px;
+   top: 30px;
 }
 
 .titleCategories{
@@ -75,25 +95,6 @@ input{
    border:none;
 }
 
-.cart {
-   background-color: #ff5722;
-   background-size: 30px 30px; /* Adjusts the background image to cover the entire button */
-   background-repeat: no-repeat; /* Prevents the image from repeating */
-   background-position: center;
-   width: 40px;
-   height: 40px;
-   color: white;
-   padding: 10px;
-   border: none;
-   border-radius: 5px;
-   font-size: 1em;
-   background-image: url('/images/cart.png');
-   position: fixed;
-   left: 1310px;
-   top: 30px;
-
-}
-
 .product-categories {
    display: grid;
    grid-template-columns: repeat(3, 1fr);
@@ -106,9 +107,14 @@ input{
    flex-direction: column;
    align-items: center;
    justify-content: center;
-   background-color: #f5f5f5;
+   background-color: #ffffff;
    padding: 20px;
    border-radius: 5px;
+   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.category:hover {
+   transform: scale(1.05);
 }
 
 .category img {
@@ -123,25 +129,67 @@ input{
    flex-wrap: wrap;
    justify-content: space-around;
    gap: 20px;
-   padding: 20px; /* Optional: Adds some padding around the products */
+   padding: 20px;
    margin-top: 550px;
-   align-items: flex-start; /* Changed from 'start' to 'flex-start' */
+   align-items: flex-start;
 }
 
 #product-display > div {
-   width: 200px; /* Adjust this value to set the fixed size of the products */
+   width: 200px;
    text-align: start;
-   border: 1px solid black;
+   border: 1px solid #2196f3; /* Light blue border */
    padding: 5px;
    height: 300px;
-   display: flex; /* Added to make the child elements align properly */
-   flex-direction: column; /* Added to stack the child elements vertically */
-   justify-content: space-between; /* Added to distribute space between child elements */
+   display: flex;
+   flex-direction: column;
+   justify-content: space-between;
 }
 
 #product-display img {
    width: 100%;
    height: auto;
-   object-fit: cover; /* Ensures the image covers the div without stretching */
+   object-fit: cover;
 }
 
+.user-menu {
+   position: fixed;
+   display: inline-block;
+   left: 1410px;
+   top: 31px;
+}
+
+.dropdown-content {
+   display: none;
+   position: absolute;
+   right: 0;
+   background-color: #f9f9f9;
+   min-width: 120px;
+   box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+   z-index: 1;
+}
+
+.dropdown-content a {
+   color: black;
+   padding: 12px 16px;
+   text-decoration: none;
+   display: block;
+   font-size: 20px;
+}
+
+.dropdown-content a:hover {background-color: #f1f1f1}
+
+.user-button{
+   background-image: url('/images/user.png');
+   background-size: 35px 35px; /* Adjusts the background image to cover the entire button */
+   background-repeat: no-repeat; /* Prevents the image from repeating */
+   background-position: center;
+   background-color: #2196f3;
+   width: 40px;
+   height: 40px;
+   border: none;
+}
+
+/* Adjusted hover effect to apply to the .user-menu container */
+.user-menu:hover .dropdown-content {
+   display: block;
+}

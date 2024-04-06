@@ -52,26 +52,55 @@ document.addEventListener('DOMContentLoaded', function() {
         window.location.href = 'userPage';
     });
 
-    document.getElementById('buyNowBtn').addEventListener('click', function() {
-        const urlParams = new URLSearchParams(window.location.search);
-        let productId = urlParams.get('id');
-        console.log(productId);
-        fetch(`/reduceQuantity?productId=${productId}`)
+    const cartButton = document.getElementById('cartBtn');
+    cartButton.addEventListener('click', () => {
+        window.location.href = 'cartPage';
+    })
+
+    document.getElementById('addToCartBtn').addEventListener('click', function() {
+        const productId = getProductIdFromURL();
+        if (!productId) {
+            alert('Product ID not found');
+            return;
+        }
+    
+        // Prompt the user for the quantity to add to the cart
+        const quantityToAdd = prompt('How many would you like to add to the cart?');
+        if (quantityToAdd === null || quantityToAdd === '' || isNaN(quantityToAdd)) {
+            alert('Please enter a valid quantity.');
+            return;
+        }
+    
+        // Function to get the user ID from the cookie
+        function getUserIdFromCookie() {
+            const cookies = document.cookie.split('; ');
+            const userIdCookie = cookies.find(cookie => cookie.startsWith('userId='));
+            if (userIdCookie) {
+                return userIdCookie.split('=')[1];
+            }
+            return null;
+        }
+    
+        const userId = getUserIdFromCookie();
+        if (!userId) {
+            alert('User ID not found in cookie');
+            return;
+        }
+    
+    
+        // Include the user ID in the request to the server
+    fetch(`/addToCart?productId=${productId}&quantity=${quantityToAdd}&userId=${userId}`)
         .then(response => {
             if (!response.ok) {
-                // If the response is not OK, throw an error with the response status text
-                throw new Error(response.statusText);
+                throw new Error('Failed to add to cart');
             }
-            return response.json();
-        })
-        .then(data => {
-            alert('Product purchased!');
             fetch(`/productInfoDisp?id=${productId}`)
             .then(response => response.json())
             .then(product => {
                 const specsDisplayContainer = document.querySelector('.product-specs');
                 specsDisplayContainer.innerHTML = '';
                 displayProductDetails(product);
+                const imgs = product.img;
                 // Fetch product specifications
                 fetch(`/getSpecs?id=${productId}`)
                     .then(response => response.json())
@@ -80,12 +109,73 @@ document.addEventListener('DOMContentLoaded', function() {
                     })
                     .catch(error => console.error('Error fetching product specs:', error));
             })
-            .catch(error => console.error('Error fetching product details:', error));
+            alert('Product added to cart');
+        })
+        .catch(error => console.error('Error adding to cart:', error));
+        console.log(`user ID: ${userId}`);
+    });    
+
+    document.getElementById('buyNowBtn').addEventListener('click', function() {
+        const urlParams = new URLSearchParams(window.location.search);
+        let productId = urlParams.get('id');
+        console.log(productId);
+    
+        // Prompt the user for the quantity to purchase
+        const quantityToPurchase = prompt('How many would you like to purchase?');
+        if (quantityToPurchase === null || quantityToPurchase === '') {
+            alert('Please enter a valid quantity.');
+            return;
+        }
+    
+        fetch(`/reduceQuantity?productId=${productId}&quantity=${quantityToPurchase}`)
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('quantity exceeds the current stock!');
+            }
+            return response.json();
+        })
+        .then(data => {
+            if (data.message.includes('updated successfully')) {
+                alert('Product purchased!');
+                // Fetch and display updated product details
+                fetch(`/productInfoDisp?id=${productId}`)
+                .then(response => response.json())
+                .then(product => {
+                    const specsDisplayContainer = document.querySelector('.product-specs');
+                    specsDisplayContainer.innerHTML = '';
+                    displayProductDetails(product);
+                    // Fetch product specifications
+                    fetch(`/getSpecs?id=${productId}`)
+                        .then(response => response.json())
+                        .then(specs => {
+                            displayProductSpecs(specs);
+                        })
+                        .catch(error => console.error('Error fetching product specs:', error));
+                })
+                .catch(error => console.error('Error fetching product details:', error));
+            } else {
+                alert('The Product is not available in the requested quantity!');
+            }
         })
         .catch(error => {
-            alert('The Product is not available!');
+            alert('An error occurred: ' + error.message);
         });
-    });
+    });  
+    
+    function isProductInfoPage() {
+        return window.location.pathname.includes('/productInfo');
+    }
+
+    // Disable the search bar if on the product information page
+    if (isProductInfoPage()) {
+        const searchBar = document.querySelector('.search-bar');
+        const searchInput = searchBar.querySelector('input');
+        const searchButton = searchBar.querySelector('button');
+
+        // Disable the input field and the submit button
+        searchInput.disabled = true;
+        searchButton.disabled = true;
+    } 
 });
 
 

@@ -4,6 +4,7 @@ const mysql = require("mysql");
 const dotenv = require("dotenv");
 const multer = require('multer');
 const upload = multer({ storage:multer.memoryStorage()}); 
+const cookieParser = require('cookie-parser');
 
 dotenv.config({ path: './.env'});
 
@@ -15,7 +16,7 @@ const db = mysql.createConnection({
     password: process.env.DATABASE_PASSWORD,
     database: process.env.DATABASE
 })
-
+app.use(cookieParser());
 const publicDirectory = path.join(__dirname, './public');
 app.use(express.static(publicDirectory));
 app.use(express.static(path.join(__dirname, 'public')));
@@ -61,13 +62,17 @@ app.get("/registerPage", (req,res) => {
     res.sendFile(path.join(__dirname, 'views', 'register.html'));
 })
 
+app.get("/cartPage", (req,res) => {
+    res.sendFile(path.join(__dirname, 'views', 'cartPage.html'));
+})
+
 app.post('/login', (req, res) => {
     const { username, password } = req.body;
     const query = 'SELECT * FROM users WHERE username = ? AND password = ?';
     db.query(query, [username, password], (error, results) => {
         if (error) throw error;
         if (results.length > 0) {
-            res.json({ authority: results[0].authority });
+            res.json({ userId: results[0].id, authority: results[0].authority });
         } else {
             res.status(401).send('Invalid username or password');
         }
@@ -268,51 +273,59 @@ app.get('/productSpecs', (req, res) => {
 });
 
 app.get('/reduceQuantity', (req, res) => {
-    // Extract productId from the query parameters
     const productId = req.query.productId;
-    console.log(`Product ID: ${productId}`);
+    const requestedQuantity = parseInt(req.query.quantity, 10);
 
-    // Check if productId is provided
-    if (!productId) {
-        return res.status(400).send('Product ID is required');
+    if (!productId || !requestedQuantity) {
+        return res.status(400).send('Product ID and quantity are required');
     }
 
-    // First, update the quantity
-    const updateQuantityQuery = 'UPDATE products SET quantity = quantity - 1 WHERE id = ?';
-    db.query(updateQuantityQuery, [productId], (error, results) => {
+    const fetchQuantityQuery = 'SELECT quantity FROM products WHERE id = ?';
+    db.query(fetchQuantityQuery, [productId], (error, results) => {
         if (error) {
-            console.error('Error updating product quantity:', error);
-            return res.status(500).send('Error updating product quantity');
+            console.error('Error fetching product quantity:', error);
+            return res.status(500).send('Error fetching product quantity');
         }
-        console.log('Product quantity updated successfully');
+        if (results.length === 0) {
+            console.log('Product not found');
+            return res.status(404).send('Product not found');
+        }
+        const currentQuantity = results[0].quantity;
 
-        // Then, check the new quantity and update the Status if necessary
-        const checkQuantityQuery = 'SELECT quantity FROM products WHERE id = ?';
-        db.query(checkQuantityQuery, [productId], (error, results) => {
+        if (requestedQuantity > currentQuantity) {
+            return res.status(400).send('Requested quantity is greater than available quantity');
+        }
+
+        const updateQuantityQuery = 'UPDATE products SET quantity = quantity - ? WHERE id = ?';
+        db.query(updateQuantityQuery, [requestedQuantity, productId], (error, results) => {
             if (error) {
-                console.error('Error fetching updated product quantity:', error);
-                return res.status(500).send('Error fetching updated product quantity');
+                console.error('Error updating product quantity:', error);
+                return res.status(500).send('Error updating product quantity');
             }
-            if (results.length === 0) {
-                console.log('Product not found');
-                return res.status(404).send('Product not found');
-            }
-            const newQuantity = results[0].quantity;
-            console.log(`New quantity: ${newQuantity}`);
+            console.log('Product quantity updated successfully');
 
-            if (newQuantity === 0) {
-                const updateStatusQuery = 'UPDATE products SET Status = "out of stock" WHERE id = ?';
-                db.query(updateStatusQuery, [productId], (error, results) => {
-                    if (error) {
-                        console.error('Error updating product Status:', error);
-                        return res.status(500).send('Error updating product Status');
-                    }
-                    console.log('Product Status updated to "out of stock"');
-                    res.json({ message: 'Product quantity updated successfully, Status updated to "out of stock"' });
-                });
-            } else {
-                res.json({ message: 'Product quantity updated successfully' });
-            }
+            const checkQuantityQuery = 'SELECT quantity FROM products WHERE id = ?';
+            db.query(checkQuantityQuery, [productId], (error, results) => {
+                if (error) {
+                    console.error('Error fetching updated product quantity:', error);
+                    return res.status(500).send('Error fetching updated product quantity');
+                }
+                const newQuantity = results[0].quantity;
+
+                if (newQuantity === 0) {
+                    const updateStatusQuery = 'UPDATE products SET Status = "out of stock" WHERE id = ?';
+                    db.query(updateStatusQuery, [productId], (error, results) => {
+                        if (error) {
+                            console.error('Error updating product Status:', error);
+                            return res.status(500).send('Error updating product Status');
+                        }
+                        console.log('Product Status updated to "out of stock"');
+                        res.json({ message: 'Product quantity updated successfully, Status updated to "out of stock"' });
+                    });
+                } else {
+                    res.json({ message: 'Product quantity updated successfully' });
+                }
+            });
         });
     });
 });
@@ -346,6 +359,152 @@ app.post('/register', (req, res) => {
         res.json({ success: true, message: 'Registration successful!' });
     });
 });
+
+app.get('/addToCart', (req, res) => {
+    const userId = req.query.userId;
+    const productId = req.query.productId;
+    const quantityToAdd = parseInt(req.query.quantity, 10);
+
+    // Check if productId, userId, and quantityToAdd are provided
+    if (!productId || !userId || isNaN(quantityToAdd)) {
+        return res.status(400).send('Product ID, User ID, and Quantity are required');
+    }
+
+    // First, fetch the current quantity of the product
+    const fetchQuantityQuery = 'SELECT quantity FROM products WHERE id = ?';
+    db.query(fetchQuantityQuery, [productId], (error, results) => {
+        if (error) {
+            console.error('Error fetching product quantity:', error);
+            return res.status(500).send('Error fetching product quantity');
+        }
+        if (results.length === 0) {
+            console.log('Product not found');
+            return res.status(404).send('Product not found');
+        }
+        const currentQuantity = results[0].quantity;
+
+        if (quantityToAdd > currentQuantity) {
+            return res.status(400).send('Requested quantity exceeds available quantity');
+        }
+
+        // Proceed with adding the product to the cart
+        const addToCartQuery = 'INSERT INTO cart_items (user_id, product_id, quantity) VALUES (?, ?, ?) ON DUPLICATE KEY UPDATE quantity = quantity + VALUES(quantity)';
+        db.query(addToCartQuery, [userId, productId, quantityToAdd], (error, results) => {
+            if (error) {
+                console.error('Error adding to cart:', error);
+                return res.status(500).send('Error adding to cart');
+            }
+
+            // Reduce the product's quantity in the products table
+            const newQuantity = currentQuantity - quantityToAdd;
+            const updateQuantityQuery = 'UPDATE products SET quantity = ? WHERE id = ?';
+            db.query(updateQuantityQuery, [newQuantity, productId], (error, results) => {
+                if (error) {
+                    console.error('Error updating product quantity:', error);
+                    return res.status(500).send('Error updating product quantity');
+                }
+                res.send('Product added to cart and quantity updated');
+            });
+        });
+    });
+});
+
+app.get('/getCartItems', (req, res) => {
+    const userId = req.query.userId;
+
+    // SQL query to fetch cart items for the given user ID
+    const query = 'SELECT products.*, cart_items.quantity FROM cart_items JOIN products ON cart_items.product_id = products.id WHERE cart_items.user_id = ?';
+
+    db.query(query, [userId], (error, results) => {
+        if (error) {
+            console.error('Error fetching cart items:', error);
+            return res.status(500).send('Error fetching cart items');
+        }
+        res.json(results);
+    });
+});
+
+app.post('/updateQuantityAndRemoveFromCart', (req, res) => {
+    const { productId, userId, quantity } = req.body;
+    const action = req.body.action;
+
+    if (action === 'cancel') {
+        // Find the product in the products table and increase its quantity
+        const fetchQuantityQuery = 'SELECT quantity FROM products WHERE id = ?';
+        db.query(fetchQuantityQuery, [productId], (error, results) => {
+            if (error) {
+                console.error('Error fetching product quantity:', error);
+                return res.status(500).send('Error fetching product quantity');
+            }
+            if (results.length === 0) {
+                console.log('Product not found');
+                return res.status(404).send('Product not found');
+            }
+            const currentQuantity = results[0].quantity;
+
+            // Increase the quantity by the specified amount
+            const newQuantity = currentQuantity + quantity;
+
+            // Update the quantity in the products table
+            const updateQuantityQuery = 'UPDATE products SET quantity = ? WHERE id = ?';
+            db.query(updateQuantityQuery, [newQuantity, productId], (error, results) => {
+                if (error) {
+                    console.error('Error updating product quantity:', error);
+                    return res.status(500).send('Error updating product quantity');
+                }
+
+                // Remove the item from the user's cart
+                const removeFromCartQuery = 'DELETE FROM cart_items WHERE product_id = ? AND user_id = ?';
+                db.query(removeFromCartQuery, [productId, userId], (error, results) => {
+                    if (error) {
+                        console.error('Error removing item from cart:', error);
+                        return res.status(500).send('Error removing item from cart');
+                    }
+
+                    res.status(200).send('Product quantity updated and item removed from cart');
+                });
+            });
+        });
+    } else {
+        res.status(400).send('Invalid action');
+    }
+});
+
+app.delete('/deleteCartItem', (req, res) => {
+    const { productId, userId } = req.query;
+
+    // Perform deletion from the cart_items table
+    const deleteCartItemQuery = 'DELETE FROM cart_items WHERE product_id = ? AND user_id = ?';
+    db.query(deleteCartItemQuery, [productId, userId], (error, results) => {
+        if (error) {
+            console.error('Error deleting item from cart:', error);
+            return res.status(500).send('Error deleting item from cart');
+        }
+        
+        console.log('Item removed from cart successfully');
+        res.sendStatus(200); // Send success response
+    });
+});
+
+app.get('/search', (req, res) => {
+    const searchQuery = req.query.query;
+    if (!searchQuery) {
+        return res.status(400).send('Search query is required');
+    }
+
+    // SQL query to search for products that match the search query
+    const sql = 'SELECT * FROM products WHERE name LIKE ?';
+    const searchTerm = `%${searchQuery}%`; // Use LIKE operator to find matches
+
+    db.query(sql, [searchTerm], (error, results) => {
+        if (error) {
+            console.error('Error searching products:', error);
+            return res.status(500).send('Error searching products');
+        }
+        res.json(results); // Send the search results as JSON
+    });
+});
+
 
 const port = process.env.PORT || 5000;
 app.listen(port, () => {

@@ -329,6 +329,48 @@ p{
     background-color: #45a049;
 }
 
+.user-menu {
+    position: fixed;
+    display: inline-block;
+    left: 1410px;
+    top: 21px;
+}
+
+.dropdown-content {
+    display: none;
+    position: absolute;
+    right: 0;
+    background-color: #f9f9f9;
+    min-width: 160px;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    z-index: 1;
+}
+
+.dropdown-content a {
+    color: black;
+    padding: 12px 16px;
+    text-decoration: none;
+    display: block;
+}
+
+.dropdown-content a:hover {background-color: #f1f1f1}
+
+.user-button{
+    background-image: url('/images/user.png');
+    background-size: 35px 35px; /* Adjusts the background image to cover the entire button */
+    background-repeat: no-repeat; /* Prevents the image from repeating */
+    background-position: center;
+    background-color: #ffffff;
+    width: 40px;
+    height: 40px;
+    border: none;
+}
+
+/* Adjusted hover effect to apply to the .user-menu container */
+.user-menu:hover .dropdown-content {
+    display: block;
+}
+
 
 
 

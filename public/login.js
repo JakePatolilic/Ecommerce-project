@@ -13,6 +13,8 @@ document.getElementById('loginBtn').addEventListener('click', function() {
                 if(response.authority === 0) {
                     window.location.href = 'adminPage';
                 } else if(response.authority === 1) {
+                    document.cookie = `userId=${response.userId}; path=/`;
+                    document.cookie = `userId=${response.userId}; path=/productInfo`;
                     window.location.href = 'userPage';
                 } else {
                     alert('Invalid authority');

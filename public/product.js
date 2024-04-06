@@ -39,7 +39,7 @@ function fetchAndDisplaySpecs() {
                 specContainer.className = 'specsDisplay';
 
                 const specNameElement = document.createElement('p');
-                specNameElement.textContent = `Spec Name: ${spec.spec_name}`;
+                specNameElement.textContent = `${spec.spec_name}`;
 
                 const editButton = document.createElement('button');
                 editButton.className = 'editButton';

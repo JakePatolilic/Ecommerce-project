@@ -4,32 +4,38 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SHOP</title>
-    <link rel = "stylesheet" href = "userStyle.css">
+    <link rel="stylesheet" href="userStyle.css">
 </head>
 <body>
    <header>
-       <button id = "logoBtn" class="logo">Shoppee</button>
+       <button id="logoBtn" class="logo">eShop</button>
        <form class="search-bar">
            <input type="text" placeholder="Sign up and get 10% off your first order">
            <button type="submit" class="searchBtn"></button>
        </form>
-       <button class="cart"></button>
+       <button class="cart" id="cartBtn"></button>
+       <div class="user-menu">
+        <button class="user-button"></button>
+        <div class="dropdown-content">
+            <a href= "\" class="logout">Log Out</a>
+        </div>
+    </div>
    </header>
-   <h2 id = "cat" class = "titleCategories">CATEGORIES</h2>
-   <div class="product-categories">
-       <div class="category" id = "Footwear">
-           <img src="images/shoe.avif" alt="Footwear">
+   <h2 id="cat" class="titleCategories">CATEGORIES</h2>
+   <div id = "pCat" class="product-categories">
+       <div class="category" id="Footwear">
+           <img src="images/shoes.png" alt="Footwear">
            <p>Footwear</p>
        </div>
-       <div class="category" id = "CLothes">
+       <div class="category" id="Clothes">
            <img src="images/clothes.avif" alt="Clothes">
            <p>Clothes</p>
        </div>
-       <div class="category" id = "Accessories">
+       <div class="category" id="Accessories">
            <img src="images/accessories.png" alt="Accessories">
            <p>Accessories</p>
        </div>
-       <div class="category" id = "Toys">
+       <div class="category" id="Toys">
            <img src="images/Toys.jpg" alt="Toys">
            <p>Toys</p>
        </div>
