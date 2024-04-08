@@ -111,6 +111,12 @@ li:hover{
     overflow: hidden;
 }
 
+.productBox:hover {
+    transform: scale(1.05);
+    transition: transform 0.5s ease-in-out;
+}
+
+
 p{
     width: 0px;
 }

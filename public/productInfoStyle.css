@@ -80,7 +80,6 @@ input{
 body {
     font-family: Arial, sans-serif;
     margin: 0;
-    padding: 0;
     background-color: rgb(222, 219, 219);
     color: #333;
 }
@@ -150,6 +149,29 @@ main {
     font-size: 16px;
     border: none;
     cursor: pointer;
+}
+
+.prodSpecs {
+    margin-top: 50px;
+    border: none;
+    border-radius: 5px;
+    min-height: 500px;
+    width: 1126px;
+    position: absolute;
+    left: 150px;
+    padding-left: 50px;
+    background-color: #ffffff;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    max-height: fit-content;
+}
+
+.prodSpecs ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+.prodSpecs ul li {
+    margin-bottom: 30px;
 }
 
 #addToCartBtn {

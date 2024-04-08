@@ -16,14 +16,30 @@ document.addEventListener('DOMContentLoaded', function() {
     // Function to display product specifications
     function displayProductSpecs(specs) {
         const specsList = document.createElement('ul');
-        specs.forEach(spec => {
+    
+        for (let i = 0; i < 5; i++) {
+            const spec = specs[i];
             const listItem = document.createElement('li');
-            // Assuming specs are stored in a specific format, adjust as necessary
             listItem.textContent = `${spec.spec_name}`;
             specsList.appendChild(listItem);
-        });
+        }
+    
         document.querySelector('.product-specs').appendChild(specsList);
     }
+
+    function displayProductSpecs1(specs) {
+        const specsList = document.createElement('ul');
+    
+        for (let i = 0; i < specs.length; i++) {
+            const spec = specs[i];
+            const listItem = document.createElement('li');
+            listItem.textContent = `${spec.spec_name}`;
+            specsList.appendChild(listItem);
+        }
+    
+        document.querySelector('.prodSpecs').appendChild(specsList);
+    }
+    
 
     // Get the product ID from the URL
     const productId = getProductIdFromURL();
@@ -40,6 +56,18 @@ document.addEventListener('DOMContentLoaded', function() {
                     .then(response => response.json())
                     .then(specs => {
                         displayProductSpecs(specs);
+                    })
+                    .catch(error => console.error('Error fetching product specs:', error));
+            })
+            .catch(error => console.error('Error fetching product details:', error));
+
+            fetch(`/productInfoDisp?id=${productId}`)
+            .then(response => response.json())
+            .then(product => {
+                fetch(`/getSpecs?id=${productId}`)
+                    .then(response => response.json())
+                    .then(specs => {
+                        displayProductSpecs1(specs);
                     })
                     .catch(error => console.error('Error fetching product specs:', error));
             })

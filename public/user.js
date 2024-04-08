@@ -1,7 +1,7 @@
 document.addEventListener('DOMContentLoaded', function() { 
     document.querySelectorAll('.category').forEach(categoryDiv => {
         categoryDiv.addEventListener('click', () => {
-            const category = categoryDiv.textContent.trim();
+            const category = categoryDiv.id;
             window.location.href = `userProduct?category=${encodeURIComponent(category)}`;
         });
     });

@@ -42,6 +42,7 @@ function displayCartItems(cartItems) {
 
         const productName = document.createElement('h3');
         productName.textContent = item.name;
+        productName.className = 'pName';
 
         const newPrice = item.quantity * item.price;
         const productQuantity = document.createElement('p');

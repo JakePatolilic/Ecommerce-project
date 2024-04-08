@@ -251,4 +251,11 @@ input{
 .user-menu:hover .dropdown-content {
    display: block;
 }
-  
+ 
+.pName {
+   white-space: nowrap;
+   overflow: hidden;
+   text-overflow: ellipsis;
+   max-width: 100%;
+   font-size: 17px;
+}
